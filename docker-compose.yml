@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  redis:
+    image: redis:4-alpine
+    ports:
+      - '6379:6379'
+  worker:
+    build:
+      context: worker
+    depends_on:
+      - "redis"
+    environment:
+      - REDIS_QUEUE=redis
+    extra_hosts:
+      - "sos:192.168.176.1"
+    volumes:
+      - './worker/data:/app/data'
+  queue-wrapper:
+    build:
+      context: queue-wrapper
+    depends_on:
+      - "redis"
+    environment:
+      - REDIS_QUEUE=redis
+    ports:
+      - '5000:5000'
+    extra_hosts:
+      - "sos:192.168.176.1"

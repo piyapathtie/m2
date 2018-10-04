@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+# ffmpeg -i data/$1  -vf fps=0.1 thumb%04d.jpg -hide_banner
+# convert -loop 0 *.jpg -resize 320x240\< data/$2 
+# find . -type f -iname \*.jpg -delete
+
+ffmpeg -i data/$1 -vf thumbnail=100,setpts=N/TB -r 1 -vframes 100 inputframes%03d.jpg
+convert -loop 0 *.jpg -resize 320x240\< data/$2 
+find . -type f -iname \*.jpg -delete
